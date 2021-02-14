@@ -1,0 +1,2 @@
+web: bundle exec puma -C config/puma.rb
+worker: ruby -e "while true; puts 'Pretend this is a background job'; sleep 60; end"
