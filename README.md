@@ -89,6 +89,7 @@ stanza](https://www.waypointproject.io/docs/waypoint-hcl/use) for this plugin.
 | template_variables | No       | map[string]string |                       | Variables that are meant to configure the nomad job template file.   |
 | variable_files     | No       | []string          |                       | The variable files to render the template with.                      |
 | vault              | No       | bool              | false                 | This option makes Levant load VAULT_TOKEN from the current ENV.      |
+| prevent_destroy    | No       | bool              | false                 | This option prevents Waypoint from destroying the nomad job.         |
 
 ```hcl
 deploy {

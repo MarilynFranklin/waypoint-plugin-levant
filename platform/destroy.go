@@ -39,9 +39,18 @@ func (p *Platform) DestroyFunc() interface{} {
 //
 // If an error is returned, Waypoint stops the execution flow and
 // returns an error to the user.
-func (p *Platform) destroy(ctx context.Context, ui terminal.UI, deployment *Deployment) error {
+
+func (p *Platform) destroy(
+	ctx context.Context,
+	ui terminal.UI,
+	deployment *Deployment,
+) error {
 	st := ui.Status()
 	defer st.Close()
+
+	if p.config.PreventDestroy == true {
+		return nil
+	}
 
 	client, err := api.NewClient(api.DefaultConfig())
 	if err != nil {

@@ -51,6 +51,9 @@ type DeployConfig struct {
 
 	// This option makes Levant load the Vault token from the current ENV.
 	Vault bool `hcl:"vault,optional"`
+
+	// This option will prevent waypoint from destroying the nomad job.
+	PreventDestroy bool `hcl:"prevent_destroy,optional"`
 }
 
 type Platform struct {
