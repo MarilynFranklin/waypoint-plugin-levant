@@ -155,6 +155,7 @@ func (b *Platform) deploy(
 	config.Template.Job, err = template.RenderJob(config.Template.TemplateFile,
 		config.Template.VariableFiles, config.Client.ConsulAddr, &b.config.TemplateVars)
 	if err != nil {
+		u.Step(terminal.StatusError, fmt.Sprintf("[ERROR] levant/command: %v", err))
 		return nil, err
 	}
 
