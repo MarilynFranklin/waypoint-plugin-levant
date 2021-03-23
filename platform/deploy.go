@@ -26,6 +26,9 @@ type DeployConfig struct {
 	// ("http://localhost:4646").
 	Address string `hcl:"address,optional"`
 
+	// Allow stale consistency mode for requests into nomad.
+	AllowStale bool `hcl:"allow_stale,optional"`
+
 	// The Consul host and port to use when making Consul KeyValue lookups
 	// for template rendering ("localhost:8500").
 	ConsulAddress string `hcl:"consul_address,optional"`
@@ -142,6 +145,7 @@ func (b *Platform) deploy(
 	}
 
 	config.Client.Addr = b.config.Address
+	config.Client.AllowStale = b.config.AllowStale
 	config.Client.ConsulAddr = b.config.ConsulAddress
 	config.Deploy.EnvVault = b.config.Vault
 	config.Template.VariableFiles = b.config.VariableFiles

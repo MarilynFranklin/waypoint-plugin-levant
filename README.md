@@ -81,15 +81,17 @@ Take a look at the examples directory to get up and running:
 These parameters are used in the [`use`
 stanza](https://www.waypointproject.io/docs/waypoint-hcl/use) for this plugin.
 
-| Option             | Required | Type              | Default               | Description                                                          |
-|--------------------|----------|-------------------|-----------------------|----------------------------------------------------------------------|
-| address            | No       | string            | http://localhost:4646 | The HTTP API endpoint for Nomad where all calls will be made.        |
-| consul_address     | No       | string            | localhost:8500        | The Consul host and port to use when making Consul KeyValue lookups. |
-| static_environment | No       | map[string]string |                       | Environment variables to add to the job.                             |
-| template_variables | No       | map[string]string |                       | Variables that are meant to configure the nomad job template file.   |
-| variable_files     | No       | []string          |                       | The variable files to render the template with.                      |
-| vault              | No       | bool              | false                 | This option makes Levant load VAULT_TOKEN from the current ENV.      |
-| prevent_destroy    | No       | bool              | false                 | This option prevents Waypoint from destroying the nomad job.         |
+| Option               | Required   | Type                | Default                 | Description                                                                                                                        |
+| -------------------- | ---------- | ------------------- | ----------------------- | ----------------------------------------------------------------------                                                             |
+| address              | No         | string              | http://localhost:4646   | The HTTP API endpoint for Nomad where all calls will be made.                                                                      |
+| allow_stale          | No         | bool                | false                   | Allow stale consistency mode for requests into nomad.
+|
+| consul_address       | No         | string              | localhost:8500          | The Consul host and port to use when making Consul KeyValue lookups.                                                               |
+| static_environment   | No         | map[string]string   |                         | Environment variables to add to the job.                                                                                           |
+| template_variables   | No         | map[string]string   |                         | Variables that are meant to configure the nomad job template file.                                                                 |
+| variable_files       | No         | []string            |                         | The variable files to render the template with.                                                                                    |
+| vault                | No         | bool                | false                   | This option makes Levant load VAULT_TOKEN from the current ENV.                                                                    |
+| prevent_destroy      | No         | bool                | false                   | This option prevents Waypoint from destroying the nomad job.                                                                       |
 
 ```hcl
 deploy {
