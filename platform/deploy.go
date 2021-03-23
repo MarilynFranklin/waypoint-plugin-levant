@@ -38,6 +38,10 @@ type DeployConfig struct {
 	// for template rendering ("localhost:8500").
 	ConsulAddress string `hcl:"consul_address,optional"`
 
+	// Forces a new instance of the periodic job. A new instance will be
+	// created even if it violates the job's prohibit_overlap settings.
+	ForceBatch bool `hcl:"force_batch,optional"`
+
 	// Environment variables that are meant to configure the application in a static
 	// way. This might be control an image that has multiple modes of operation,
 	// selected via environment variable. Most configuration should use the waypoint
@@ -153,6 +157,7 @@ func (b *Platform) deploy(
 	config.Client.AllowStale = b.config.AllowStale
 	config.Deploy.Canary = b.config.Canary
 	config.Client.ConsulAddr = b.config.ConsulAddress
+	config.Deploy.ForceBatch = b.config.ForceBatch
 	config.Deploy.EnvVault = b.config.Vault
 	config.Template.VariableFiles = b.config.VariableFiles
 
@@ -195,6 +200,13 @@ func (b *Platform) deploy(
 		}
 	}
 
+	if config.Deploy.ForceBatch {
+		if err = checkForceBatch(config.Template.Job, config.Deploy.ForceBatch); err != nil {
+			u.Step(terminal.StatusError, fmt.Sprintf("[ERROR] levant/command: %v", err))
+			return nil, err
+		}
+	}
+
 	// Set our ID on the meta.
 	config.Template.Job.SetMeta(metaId, result.Id)
 	config.Template.Job.SetMeta(metaNonce, time.Now().UTC().Format(time.RFC3339Nano))
@@ -230,4 +242,13 @@ func checkCanaryAutoPromote(job *nomad.Job, canaryAutoPromote int) error {
 	}
 
 	return fmt.Errorf("canary_auto_update of %v passed but job is not canary enabled", canaryAutoPromote)
+}
+
+func checkForceBatch(job *nomad.Job, forceBatch bool) error {
+
+	if forceBatch && job.IsPeriodic() {
+		return nil
+	}
+
+	return fmt.Errorf("force_batch passed but job is not periodic")
 }
