@@ -42,6 +42,10 @@ type DeployConfig struct {
 	// created even if it violates the job's prohibit_overlap settings.
 	ForceBatch bool `hcl:"force_batch,optional"`
 
+	// Use the taskgroup count from the Nomad job file instead of the count
+	// that is obtained from the running job count.
+	ForceCount bool `hcl:"force_count,optional"`
+
 	// Environment variables that are meant to configure the application in a static
 	// way. This might be control an image that has multiple modes of operation,
 	// selected via environment variable. Most configuration should use the waypoint
@@ -158,6 +162,7 @@ func (b *Platform) deploy(
 	config.Deploy.Canary = b.config.Canary
 	config.Client.ConsulAddr = b.config.ConsulAddress
 	config.Deploy.ForceBatch = b.config.ForceBatch
+	config.Deploy.ForceCount = b.config.ForceCount
 	config.Deploy.EnvVault = b.config.Vault
 	config.Template.VariableFiles = b.config.VariableFiles
 

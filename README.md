@@ -84,11 +84,11 @@ stanza](https://www.waypointproject.io/docs/waypoint-hcl/use) for this plugin.
 | Option               | Required   | Type                | Default                 | Description                                                                                                                        |
 | -------------------- | ---------- | ------------------- | ----------------------- | ----------------------------------------------------------------------                                                             |
 | address              | No         | string              | http://localhost:4646   | The HTTP API endpoint for Nomad where all calls will be made.                                                                      |
-| allow_stale          | No         | bool                | false                   | Allow stale consistency mode for requests into nomad.
-|
+| allow_stale          | No         | bool                | false                   | Allow stale consistency mode for requests into nomad.                                                                              |
 | canary_auto_promote  | No         | int                 | 0                       | The time period in seconds that Levant should wait for before attempting to promote a canary deployment.                           |
 | consul_address       | No         | string              | localhost:8500          | The Consul host and port to use when making Consul KeyValue lookups.                                                               |
 | force_batch          | No         | bool                | false                   | Forces a new instance of the periodic job. A new instance will be created even if it violates the job's prohibit_overlap settings. |
+| force_count          | No         | bool                | false                   | Use the taskgroup count from the Nomad job file instead of the count that is obtained from the running job count.                  |
 | static_environment   | No         | map[string]string   |                         | Environment variables to add to the job.                                                                                           |
 | template_variables   | No         | map[string]string   |                         | Variables that are meant to configure the nomad job template file.                                                                 |
 | variable_files       | No         | []string            |                         | The variable files to render the template with.                                                                                    |
