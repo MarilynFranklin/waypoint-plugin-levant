@@ -86,6 +86,7 @@ stanza](https://www.waypointproject.io/docs/waypoint-hcl/use) for this plugin.
 | address              | No         | string              | http://localhost:4646   | The HTTP API endpoint for Nomad where all calls will be made.                                                                      |
 | allow_stale          | No         | bool                | false                   | Allow stale consistency mode for requests into nomad.
 |
+| canary_auto_promote  | No         | int                 | 0                       | The time period in seconds that Levant should wait for before attempting to promote a canary deployment.                           |
 | consul_address       | No         | string              | localhost:8500          | The Consul host and port to use when making Consul KeyValue lookups.                                                               |
 | static_environment   | No         | map[string]string   |                         | Environment variables to add to the job.                                                                                           |
 | template_variables   | No         | map[string]string   |                         | Variables that are meant to configure the nomad job template file.                                                                 |

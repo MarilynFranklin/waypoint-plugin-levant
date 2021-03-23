@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/levant/levant"
 	"github.com/hashicorp/levant/levant/structs"
 	"github.com/hashicorp/levant/template"
+	nomad "github.com/hashicorp/nomad/api"
 	"github.com/hashicorp/waypoint/builtin/docker"
 )
 
@@ -28,6 +29,10 @@ type DeployConfig struct {
 
 	// Allow stale consistency mode for requests into nomad.
 	AllowStale bool `hcl:"allow_stale,optional"`
+
+	// The time period in seconds that Levant should wait for before
+	// attempting to promote a canary deployment.
+	Canary int `hcl:"canary_auto_promote,optional"`
 
 	// The Consul host and port to use when making Consul KeyValue lookups
 	// for template rendering ("localhost:8500").
@@ -146,6 +151,7 @@ func (b *Platform) deploy(
 
 	config.Client.Addr = b.config.Address
 	config.Client.AllowStale = b.config.AllowStale
+	config.Deploy.Canary = b.config.Canary
 	config.Client.ConsulAddr = b.config.ConsulAddress
 	config.Deploy.EnvVault = b.config.Vault
 	config.Template.VariableFiles = b.config.VariableFiles
@@ -182,6 +188,13 @@ func (b *Platform) deploy(
 		}
 	}
 
+	if config.Deploy.Canary > 0 {
+		if err = checkCanaryAutoPromote(config.Template.Job, config.Deploy.Canary); err != nil {
+			u.Step(terminal.StatusError, fmt.Sprintf("[ERROR] levant/command: %v", err))
+			return nil, err
+		}
+	}
+
 	// Set our ID on the meta.
 	config.Template.Job.SetMeta(metaId, result.Id)
 	config.Template.Job.SetMeta(metaNonce, time.Now().UTC().Format(time.RFC3339Nano))
@@ -199,4 +212,22 @@ func (b *Platform) deploy(
 	result.Name = *config.Template.Job.Name
 
 	return &result, nil
+}
+
+func checkCanaryAutoPromote(job *nomad.Job, canaryAutoPromote int) error {
+	if canaryAutoPromote == 0 {
+		return nil
+	}
+
+	if job.Update != nil && job.Update.Canary != nil && *job.Update.Canary > 0 {
+		return nil
+	}
+
+	for _, group := range job.TaskGroups {
+		if group.Update != nil && group.Update.Canary != nil && *group.Update.Canary > 0 {
+			return nil
+		}
+	}
+
+	return fmt.Errorf("canary_auto_update of %v passed but job is not canary enabled", canaryAutoPromote)
 }
