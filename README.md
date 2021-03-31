@@ -125,3 +125,10 @@ also make the following variables available to your nomad job template file:
 | DeploymentId         | Generated deployment id                                                                                                                |
 | DeploymentApp        | Waypoint App name                                                                                                                      |
 | DeploymentName       | Generated deployment name which can be used as the job name                                                                            |
+
+## Levant Error Messages
+
+Levant provides detailed failure messages for deployment issues, however, these
+are not surfaced by default in waypoint's output. To view levant's failure
+messages, use the `-vv` flag when deploying (`waypoint up -vv` or `waypoint
+deploy -vv`).
