@@ -14,5 +14,5 @@ func main() {
 		// Comment out any components which are not
 		// required for your plugin
 		&platform.Platform{},
-	))
+	), sdk.WithMappers(platform.LevantDeploymentMapper))
 }
