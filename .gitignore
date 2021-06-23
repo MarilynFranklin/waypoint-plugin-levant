@@ -1,5 +1,6 @@
 ./bin
 releases
 data.db
+.tool-versions
 
 waypoint-plugin-levant
