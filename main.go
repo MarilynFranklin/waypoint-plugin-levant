@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/MarilynFranklin/waypoint-plugin-levant/platform"
 	sdk "github.com/hashicorp/waypoint-plugin-sdk"
-	"github.com/tn-platform/waypoint-plugin-levant/platform"
 )
 
 func main() {

@@ -3,7 +3,7 @@ syntax = "proto3";
 
 package platform;
 
-option go_package = "github.com/tn-platform/waypoint-plugin-levant/platform";
+option go_package = "github.com/MarilynFranklin/waypoint-plugin-levant/platform";
 
 // You can customise this message to change the fields for
 // the output value from your Deployment

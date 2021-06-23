@@ -14,7 +14,7 @@ protos:
 	@echo ""
 	@echo "Build Protos"
 
-	protoc -I . --go_out=plugins=grpc:. --go_opt=paths=source_relative ./platform/output.proto
+	protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative ./platform/output.proto
 
 # Builds the plugin on your local machine
 build:
